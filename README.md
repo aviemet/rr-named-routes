@@ -1,34 +1,79 @@
-# npm-react-typescript-template
+# react-named-routes
 
-A template for publishing a React + TypeScript package to npm
+A small library for creating named routes for React Router. Uses Proxy to create a clean interface for defining and referencing routes.
 
 ## How to use
 
-Fork this repo, clone it to your local computer, and edit the `package.json` along with every other required file to match your project.
-Write the code for your package in TypeScript and Sass, compile it, and publish it to [npm](https://npmjs.com).
+First, define your routes, each beginning with a forward slash. Use the `nested` function to define nested routes:
 
-To compile your code once, run
+```
+import { nested } from "react-named-rotues"
 
-- `npm run build`.
+export default routes = {
+  login: "/login",
+  users: nested("/users", {
+    show: "/:id"
+  })
+}
+```
 
-To compile your code once and refresh on file change, run
+Next wrap your app in the context provider
 
-- `npm run start`.
+```
+import { NamedRoutesProvider } from 'react-named-routes'
 
-To publish your package to npm, make sure you're logged in the correct account by running
+const App = () => {
+	<NamedRoutesProvider>
+		{ children } // <-- Rest of the app....
+	</NamedRoutesProvider>
+}
 
-- `npm login`.
+```
 
-Compile your package by running
+Now your routes are available as a hook in any component. Nested routes can be chained, then called as a method for the string value of the route.
 
-- `npm run build`
+```
+import { Router, Route } from 'react-router-dom'
+import { useNamedRoutes } from 'react-named-routes'
+...
 
-Update the package version accordingly by using
 
-- [`npm version [patch | minor | major]`](https://docs.npmjs.com/about-semantic-versioning)
+const AppRoutes = () => {
+  const routes = useNamedRoutes()
 
-Then publish your package by running
+  return (
+    <>
+      <Router>
+        <Route path={ routes.login() } component={ LoginComponent } /> // "/login"
 
-- `npm publish`
+        <Route path={ routes.users() } component={ DisplayUsersComponent } /> // "/users"
 
-### Happy Building ♡
+        <Route path={ routes.users.show() } component={ UserComponent } /> // "/users/:id"
+      </Router>
+    </>
+  )
+}
+
+```
+
+In any component, you can create a link:
+
+```
+import { Link } from 'react-router-dom'
+import { useNamedRoutes } from 'react-named-routes'
+
+const SomeComponent = () => { 
+  const routes = useNamedRoutes()
+
+	return (
+		<>
+			<Link to={ routes.login() }>Login</Link> // "/login"
+
+			<Link to={ routes.users() }>All Users</Link> // "/users"
+
+			<Link to={ routes.users.show({ id: 1 }) }>Specific User</Link> // "/users/1"
+		</>
+	)
+}
+
+```
