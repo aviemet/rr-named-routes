@@ -1,10 +1,10 @@
 {
-  "name": "react-named-routes",
+  "name": "rr-named-routes",
   "version": "1.0.0",
   "description": "A library for using named routes with react-router",
   "author": "aviemet",
   "license": "MIT",
-  "repository": "aviemet/react-named-routes",
+  "repository": "aviemet/rr-named-routes",
   "main": "dist/index.js",
   "engines": {
     "node": ">=8",
