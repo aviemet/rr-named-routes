@@ -7,12 +7,12 @@ A small library for creating named routes for React Router. Uses Proxy to create
 First, define your routes, each beginning with a forward slash. Use the `nested` function to define nested routes:
 
 ```javascript
-import { nested } from "react-named-rotues"
+import { nested } from 'react-named-rotues'
 
 export default routes = {
-  login: "/login",
-  users: nested("/users", {
-    show: "/:id"
+  login: '/login',
+  users: nested('/users', {
+    show: '/:id'
   })
 }
 ```
@@ -21,9 +21,10 @@ Next wrap your app in the context provider
 
 ```javascript
 import { NamedRoutesProvider } from 'react-named-routes'
+import routes from './routes'
 
 const App = () => {
-  <NamedRoutesProvider>
+  <NamedRoutesProvider value={ routes }>
     { children } // <-- Rest of the app....
   </NamedRoutesProvider>
 }
