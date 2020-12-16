@@ -4,8 +4,8 @@ export const routesNoSlashes = nested('', {
 	users: nested('users', {
 		user: nested(':userId', {
 			edit: 'edit',
-			accounts: nested('accounts', {
-				account: ':accountId'
+			lists: nested('lists', {
+				list: ':listId'
 			})
 		})
 	})
@@ -15,8 +15,8 @@ export const routesAllSlashes = nested('/', {
 	users: nested('/users', {
 		user: nested('/:userId', {
 			edit: '/edit',
-			accounts: nested('/accounts', {
-				account: '/:accountId'
+			lists: nested('/lists', {
+				list: '/:listId'
 			})
 		})
 	})
@@ -26,8 +26,8 @@ export const routesSomeSlashes = nested('/', {
 	users: nested('/users', {
 		user: nested(':userId', {
 			edit: '/edit',
-			accounts: nested('accounts', {
-				account: ':accountId'
+			lists: nested('lists', {
+				list: ':listId'
 			})
 		})
 	})
@@ -37,8 +37,8 @@ export const routesWithBase = nested('/admin', {
 	users: nested('users', {
 		user: nested(':userId', {
 			edit: 'edit',
-			accounts: nested('accounts', {
-				account: ':accountId'
+			lists: nested('lists', {
+				list: ':listId'
 			})
 		})
 	})
@@ -48,8 +48,8 @@ export const routesNotNested = {
 	users: nested('users', {
 		user: nested(':userId', {
 			edit: 'edit',
-			accounts: nested('accounts', {
-				account: ':accountId'
+			lists: nested('lists', {
+				list: ':listId'
 			})
 		})
 	})
@@ -64,10 +64,10 @@ export const routesResults = {
 			edit: {
 				__index__: '/users/:userId/edit'
 			},
-			accounts: {
-				__index__: '/users/:userId/accounts',
-				account: {
-					__index__: '/users/:userId/accounts/:accountId'
+			lists: {
+				__index__: '/users/:userId/lists',
+				list: {
+					__index__: '/users/:userId/lists/:listId'
 				}
 			}
 		}
