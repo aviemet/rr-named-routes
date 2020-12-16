@@ -2,6 +2,8 @@ import * as React from 'react'
 import { nested } from './nested'
 import { pathsToCallableProxy } from './callableChainable'
 
+export { nested }
+
 export const INDEX = '__index__'
 
 type NamedRoutesHookObject = {[key: string]: any}
