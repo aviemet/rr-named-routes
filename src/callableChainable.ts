@@ -1,14 +1,10 @@
-import { generatePath } from "react-router"
+import { generatePath } from 'react-router'
 
-import { INDEX } from './nested'
-
-// Convert routes object to paths object
-export const pathsToCallableProxy = (routes: object): any => {
-	return new Proxy(new CallableChainable(routes), callableChainableHandler)
-}
+import { INDEX } from './route'
 
 // Object who's elements are both chainable and callable
 export class CallableChainable extends Function {
+
 	constructor(routes: object) {
 		super()
 
@@ -28,11 +24,13 @@ export class CallableChainable extends Function {
 }
 
 // Proxy second argument
-const callableChainableHandler = {
+export const callableChainableHandler = {
 	get: function(target: object, key: string) {
 		// Ignore node inspection triggering Symbol util.inspect.custom trap (happens in jest)
 		if(typeof key !== 'string') return
+		
 		if(!target[key]) {
+			console.log({ key, target })
 			throw new Error(`Error: route ${target[INDEX]}/${key} does not exist`)
 		}
 		return target[key]

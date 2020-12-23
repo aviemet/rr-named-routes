@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { nested } from './nested'
+import { route } from './route'
 import { pathsToCallableProxy } from './callableChainable'
 
-export { nested }
+export { route }
 
 export const INDEX = '__index__'
 
@@ -18,7 +18,9 @@ export const useNamedRoutes = () => React.useContext(NamedRouteContext)
 export const NamedRoutesProvider: React.FC<{routes: object, children: any}> = ({ routes, children }) => {
 	
 	let memoizedRoutes = React.useMemo(() => {
-		return pathsToCallableProxy(nested('', routes))
+		// const routesObject = new callableChainable(routes)
+		// return callableChainable.routes()
+		return pathsToCallableProxy(route('', routes))
 	}, [routes])
 	
 	return (
