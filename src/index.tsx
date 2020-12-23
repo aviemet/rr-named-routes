@@ -1,26 +1,21 @@
 import * as React from 'react'
-import { route } from './route'
-import { pathsToCallableProxy } from './callableChainable'
+import { route, deepNestedObject } from './route'
+import { NamedRoutes } from './namedRoutes'
+import { CallableChainable } from './callableChainable';
 
-export { route }
-
-export const INDEX = '__index__'
-
-type NamedRoutesHookObject = {[key: string]: any}
+export { route, NamedRoutes }
 
 /**
  * Hook for using named routes in a react-router project
  * @param routes routes object
  */
-const NamedRouteContext = React.createContext<NamedRoutesHookObject>({})
+export const NamedRouteContext = React.createContext<CallableChainable | undefined>(undefined)
 export const useNamedRoutes = () => React.useContext(NamedRouteContext)
 
-export const NamedRoutesProvider: React.FC<{routes: object, children: any}> = ({ routes, children }) => {
+export const NamedRoutesProvider: React.FC<{routes: deepNestedObject<string>, children: any}> = ({ routes, children }) => {
 	
 	let memoizedRoutes = React.useMemo(() => {
-		// const routesObject = new callableChainable(routes)
-		// return callableChainable.routes()
-		return pathsToCallableProxy(route('', routes))
+		return new NamedRoutes(routes).routes
 	}, [routes])
 	
 	return (

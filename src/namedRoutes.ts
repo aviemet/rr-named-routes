@@ -1,25 +1,21 @@
-import { route } from './route'
+import { route, deepNestedObject } from './route';
 import { CallableChainable, callableChainableHandler } from './callableChainable';
 
 export class NamedRoutes {
-	rawRoutes
-	proxyRoutes
+	rawRoutes: deepNestedObject<string>
+	proxyRoutes: CallableChainable
 
-	constructor(routes: object) {
-		this.validateRoutes(routes)
+	constructor(routes: deepNestedObject<string>) {
 		this.rawRoutes = route('', routes)
+		this.validateRoutes(this.rawRoutes)
 		return this
 	}
 
 	get routes() {
 		if(!this.proxyRoutes) {
-			this.proxyRoutes = this.createProxyRoutes(this.rawRoutes)
+			this.proxyRoutes = this.createProxyRoutes()
 		}
 		return this.proxyRoutes
-	}
-
-	createProxyRoutes(routes) {
-		return new Proxy(new CallableChainable(routes), callableChainableHandler)
 	}
 
 	/**
@@ -32,8 +28,8 @@ export class NamedRoutes {
 	 * Sanitize routes for html entities
 	 * @param routes routes object to validate
 	 */
-	validateRoutes(routes) {
-		for(const [key, value] of Object.entries(routes)) {
+	validateRoutes(routes: deepNestedObject<string>) {
+		for(const [_, value] of Object.entries(routes)) {
 			if(typeof value === 'string') {
 				this.testConflictingParams(value)
 			} else {
@@ -43,10 +39,15 @@ export class NamedRoutes {
 	}
 
 	private
-	testConflictingParams(path) {
+
+	createProxyRoutes(): CallableChainable {
+		return new Proxy(new CallableChainable(this.rawRoutes), callableChainableHandler)
+	}
+
+	testConflictingParams(path: string) {
 		const variableParams = new Set()
-		const segments = path.split('/')
-		segments.forEach(segment => {
+		
+		path.split('/').forEach(segment => {
 			if(segment.charAt(0) !== ':') return
 
 			if(variableParams.has(segment)) {

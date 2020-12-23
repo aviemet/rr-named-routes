@@ -1,11 +1,15 @@
 import { generatePath } from 'react-router'
 
-import { INDEX } from './route'
+import { deepNestedObject, INDEX } from './route'
 
-// Object who's elements are both chainable and callable
+interface nestedCallableChainable {
+	[key: string]: any
+}
+
+// Object who's elements are both callable and chainable
 export class CallableChainable extends Function {
 
-	constructor(routes: object) {
+	constructor(routes: string | deepNestedObject<string>) {
 		super()
 
 		this[INDEX] = routes[INDEX]
@@ -14,28 +18,22 @@ export class CallableChainable extends Function {
 			if(key !== INDEX) {
 				const route = {}
 				route[key] = value
-				this[key] = new Proxy(new CallableChainable(value), callableChainableHandler)
+				this[key] = new Proxy<CallableChainable>(new CallableChainable(value), callableChainableHandler)
 			}
 		}
 
-    //@ts-ignore
 		return new Proxy(this, callableChainableHandler)
 	}
 }
 
-// Proxy second argument
-export const callableChainableHandler = {
-	get: function(target: object, key: string) {
-		// Ignore node inspection triggering Symbol util.inspect.custom trap (happens in jest)
-		if(typeof key !== 'string') return
-		
+export const callableChainableHandler: ProxyHandler<CallableChainable> = {
+	get: function(target: CallableChainable, key: string): CallableChainable {		
 		if(!target[key]) {
-			console.log({ key, target })
 			throw new Error(`Error: route ${target[INDEX]}/${key} does not exist`)
 		}
 		return target[key]
 	},
-	apply: function(target: object, _: object, args: any[]) {
+	apply: function(target: CallableChainable, _: any, args: Record<string, string>[]): string {
 		if(args.length > 0) {
 			return generatePath(target[INDEX], args[0])
 		}
