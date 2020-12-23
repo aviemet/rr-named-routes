@@ -6,14 +6,13 @@ export const INDEX = "__index__"
  * @param base 
  * @param routes 
  */
-export const nested = (base: string, routes: object) => {
+export const route = (base: string, routes: object) => {
 	// Give each path an index to overwrite
 	routes[INDEX] = routes[INDEX] || ""
 
 	const mappedRoutes: any = {}
 	for(const [key, value] of Object.entries(routes)) {
 		if(typeof value === 'string') {
-			testDuplicateParams(value)
 
 			const path = `${slash(base)}${slash(value.replace(/^\//, ''))}` || '/'
 
@@ -25,7 +24,7 @@ export const nested = (base: string, routes: object) => {
 				}
 			}
 		} else if(typeof value === 'object') {
-			mappedRoutes[key] = nested(base, value)
+			mappedRoutes[key] = route(base, value)
 		}
 	}
 
