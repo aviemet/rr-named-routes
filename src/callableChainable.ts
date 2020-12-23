@@ -7,7 +7,7 @@ interface nestedCallableChainable {
 }
 
 // Object who's elements are both callable and chainable
-export class CallableChainable extends Function {
+export class CallableChainable extends Function implements nestedCallableChainable {
 
 	constructor(routes: string | deepNestedObject<string>) {
 		super()
