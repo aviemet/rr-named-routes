@@ -1,10 +1,8 @@
-import { route } from './route'
 import { 
 	routesNoSlashes,
 	routesAllSlashes,
 	routesSomeSlashes,
 	routesWithBase,
-	routesNotRouted,
 	routesResults,
 	adminRoutesResults
 } from './route.mock'
@@ -12,6 +10,8 @@ import {
 describe('route', () => {
 	test('outputs properly formed indexed routes object', () => {
 		expect(routesNoSlashes).toEqual(routesResults)
+		expect(routesAllSlashes).toEqual(routesResults)
+		expect(routesSomeSlashes).toEqual(routesResults)
+		expect(routesWithBase).toEqual(adminRoutesResults)
 	})
 })
-

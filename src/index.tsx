@@ -18,6 +18,8 @@ export const useNamedRoutes = () => React.useContext(NamedRouteContext)
 export const NamedRoutesProvider: React.FC<{routes: object, children: any}> = ({ routes, children }) => {
 	
 	let memoizedRoutes = React.useMemo(() => {
+		// const routesObject = new callableChainable(routes)
+		// return callableChainable.routes()
 		return pathsToCallableProxy(route('', routes))
 	}, [routes])
 	

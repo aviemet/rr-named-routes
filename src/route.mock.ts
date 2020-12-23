@@ -8,6 +8,9 @@ export const routesNoSlashes = route('', {
 				list: ':listId'
 			})
 		})
+	}),
+	events: route('events', {
+		event: ':eventId'
 	})
 })
 
@@ -19,6 +22,9 @@ export const routesAllSlashes = route('/', {
 				list: '/:listId'
 			})
 		})
+	}),
+	events: route('events', {
+		event: ':eventId'
 	})
 })
 
@@ -30,6 +36,9 @@ export const routesSomeSlashes = route('/', {
 				list: ':listId'
 			})
 		})
+	}),
+	events: route('events', {
+		event: ':eventId'
 	})
 })
 
@@ -41,6 +50,9 @@ export const routesWithBase = route('/admin', {
 				list: ':listId'
 			})
 		})
+	}),
+	events: route('events', {
+		event: ':eventId'
 	})
 })
 
@@ -52,6 +64,9 @@ export const routesNotRouted = {
 				list: ':listId'
 			})
 		})
+	}),
+	events: route('events', {
+		event: ':eventId'
 	})
 }
 
@@ -71,12 +86,18 @@ export const routesResults = {
 				}
 			}
 		}
+	},
+	events: {
+		__index__: '/events',
+		event: {
+			__index__: '/events/:eventId'
+		}
 	}
 }
 
 
 export const adminRoutesResults = {
-	__index__: '/admin/',
+	__index__: '/admin',
 	users: {
 		__index__: '/admin/users',
 		user: {
@@ -90,6 +111,12 @@ export const adminRoutesResults = {
 					__index__: '/admin/users/:userId/lists/:listId'
 				}
 			}
+		}
+	},
+	events: {
+		__index__: '/admin/events',
+		event: {
+			__index__: '/admin/events/:eventId'
 		}
 	}
 }

@@ -14,7 +14,7 @@ export const route = (base: string, routes: object) => {
 	for(const [key, value] of Object.entries(routes)) {
 		if(typeof value === 'string') {
 
-			const path = `${slash(base)}${slash(value.replace(/^\//, ''))}` || '/'
+			const path = slash(`${slash(base)}${slash(value)}`)
 
 			if(key === INDEX) {
 				mappedRoutes[INDEX] = path
@@ -31,17 +31,4 @@ export const route = (base: string, routes: object) => {
 	return mappedRoutes
 }
 
-const params = new Set()
-const testDuplicateParams = param => {
-	// Only test params which start with ':' and have no trailing path values
-	const match = param.replace(/^\/|\/$/, '')
-	if(/^:\w*$/.test(match)) {
-		if(params.has(match)) {
-			throw new Error(`Error: ${match} is already used as a parameter value on another route`)
-		}
-
-		params.add(match)
-	}
-}
-
-const slash = str =>  `${str === '' ? '' : '/'}${str}`
+const slash = str => `/${str.replace(/^\/+|\/+$/g, '')}`
